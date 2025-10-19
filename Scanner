@@ -35,11 +35,12 @@ local JobId = game.JobId
 local Player = Players.LocalPlayer
 local Request =  http_request or request or HttpPost or syn.request
 local WorkerURL = "https://roblox-server.realflury.workers.dev/api/brainrot"
-local ServersWorkerURL = "https://autoscaler.realflury.workers.dev/"
+local ServersURL = "http://164.92.77.150:3000/servers?count=100"
 
 -- Functions
 function ServerHop()
-    local success, response = pcall(Request, {Url = ServersWorkerURL, Method = "GET", Headers = {["Content-Type"] = "application/json"}})
+    local success, response = pcall(Request, {Url = ServersURL, Method = "GET", Headers = {["Content-Type"] = "application/json"}})
+
     if not success or not response or not response.Body then 
         return
     end
@@ -50,7 +51,7 @@ function ServerHop()
         return
     end
 
-    for i,v in pairs(result.servers) do 
+    for i,v in pairs(result.serverIds) do 
         print(i,v)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, v)
         task.wait(.5)
