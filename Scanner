@@ -125,7 +125,7 @@ GameController:OnGameLoaded(function()
     print("Game Loaded - Checking Brainrots")
     checkBrainrots()
 
-    while task.wait(0.1) do
+    while task.wait(3) do
         ServerHop()
     end
 end)
