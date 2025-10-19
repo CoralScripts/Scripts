@@ -69,6 +69,7 @@ local function sendWebhook(owner, brainrot, gen)
     table.insert(description, "**Generation:**\n ```"..NumberUtils:ToString(gen).."/s```")
     table.insert(description, "**Player:**\n ```"..owner.DisplayName.." (@"..owner.Name..")```")
     table.insert(description, "**JobID:**\n ```"..JobId.."```")
+    table.insert(description, "**Players:**\n ```"..(#Players:GetChildren()).."/8```")
 
     local msg = {
         ["username"] =  "Coral",
