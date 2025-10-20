@@ -59,7 +59,7 @@ function ServerHop()
 
     for i,v in pairs(result.serverIds) do 
         print(i,v)
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, v)
+        pcall(function() TeleportService:TeleportToPlaceInstance(game.PlaceId, v) end)
         task.wait(.1)
     end
 end
@@ -135,7 +135,7 @@ GameController:OnGameLoaded(function()
 
     task.wait(5)
 
-    while task.wait(1) do
-        ServerHop()
+    while task.wait(13) do
+        pcall(function() ServerHop() end)
     end
 end)
