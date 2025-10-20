@@ -60,7 +60,7 @@ function ServerHop()
     for i,v in pairs(result.serverIds) do 
         print(i,v)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, v)
-        task.wait(.5)
+        task.wait(.1)
     end
 end
 
@@ -133,9 +133,9 @@ GameController:OnGameLoaded(function()
     print("Game Loaded - Checking Brainrots")
     checkBrainrots()
 
-    task.wait(15)
+    task.wait(5)
 
-    while task.wait(3) do
+    while task.wait(1) do
         ServerHop()
     end
 end)
