@@ -45,9 +45,15 @@ function ServerHop()
         return
     end
 
-    local result = HttpService:JSONDecode(response.Body)
+    local resultSuccess, result = pcall(function()
+        return HttpService:JSONDecode(response.Body)
+    end)
 
-    if not result then
+    if not resultSuccess then
+        return
+    end
+
+    if resultSuccess and not result then 
         return
     end
 
@@ -75,7 +81,7 @@ local function sendWebhook(owner, brainrot, gen)
     local msg = {
         ["username"] =  "Coral",
         ["avatar_url"] = "https://img.freepik.com/premium-vector/cartoon-coral-with-green-seaweed-it_730620-830462.jpg?w=1480",
-        ["content"] = (gen > 40000000 and "@everyone" or ""),
+        ["content"] = (gen >= 40000000 and "@everyone" or ""),
         ["embeds"] = {
             {
                 ["color"] = (gen > 40000000 and 0xfb21ff or 0x3452eb),
@@ -127,7 +133,7 @@ GameController:OnGameLoaded(function()
     print("Game Loaded - Checking Brainrots")
     checkBrainrots()
 
-    task.wait(5)
+    task.wait(15)
 
     while task.wait(3) do
         ServerHop()
