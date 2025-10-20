@@ -39,6 +39,7 @@ local ServersURL = "http://164.92.77.150:3000/servers?count=100"
 
 -- Functions
 function ServerHop()
+    print("Fetching Servers")
     local success, response = pcall(Request, {Url = ServersURL, Method = "GET", Headers = {["Content-Type"] = "application/json"}})
 
     if not success or not response or not response.Body then 
@@ -58,8 +59,8 @@ function ServerHop()
     end
 
     for i,v in pairs(result.serverIds) do 
-        local s, r = pcall(function() return TeleportService:TeleportToPlaceInstance(PlaceId, v.id, Player) end)
-        if s then break end
+        local s, r = pcall(function() return TeleportService:TeleportToPlaceInstance(PlaceId, v, Player) end)
+        task.wait(1)
     end
 end
 
@@ -132,7 +133,8 @@ GameController:OnGameLoaded(function()
     print("Game Loaded - Checking Brainrots")
     checkBrainrots()
 
-    while task.wait(15) do
-        pcall(function() ServerHop() end)
+    while true do
+        ServerHop()
+        task.wait(15)
     end
 end)
