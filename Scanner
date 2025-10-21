@@ -1,7 +1,7 @@
 -- SETTINGS
 getgenv()._S = {
     MinGeneration = 10000000,
-    Webhook = "https://discord.com/api/webhooks/1428499166253813800/miZ5_0EcTGvar2EvhB29J1DCgIibNcmOgo9sphV8i57hW4ZRZByL7eRyNc5Hly2D5fNF",
+    Webhook = "https://discord.com/api/webhooks/1430021241808355390/eCd1Bt0SLbW3lBxtnQZiudcMw-GrZVK0EJSPkAmskfbVblIu2BjdpnvGrOEFz3ajrygU",
 }
 
 
@@ -60,7 +60,7 @@ function ServerHop()
 
     for i,v in pairs(result.serverIds) do 
         local s, r = pcall(function() return TeleportService:TeleportToPlaceInstance(PlaceId, v, Player) end)
-        task.wait(.5)
+        task.wait(1)
     end
 end
 
