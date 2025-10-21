@@ -35,7 +35,7 @@ local JobId = game.JobId
 local Player = Players.LocalPlayer
 local Request =  http_request or request or HttpPost or syn.request
 local WorkerURL = "https://roblox-server.realflury.workers.dev/api/brainrot"
-local ServersURL = "http://164.92.77.150:3000/servers?count=500"
+local ServersURL = "http://164.92.77.150:3000/servers?count=20"
 
 -- Functions
 function ServerHop()
@@ -84,7 +84,7 @@ local function sendWebhook(owner, brainrot, gen)
         ["content"] = (gen >= 40000000 and "@everyone" or ""),
         ["embeds"] = {
             {
-                ["color"] = (gen > 40000000 and 0xfb21ff or 0x3452eb),
+                ["color"] = (gen >= 40000000 and 0xfb21ff or 0x3452eb),
                 ["title"] = brainrot,
                 ["description"] = table.concat(description, "\n"),
                 ['timestamp'] = dateTime(),
