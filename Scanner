@@ -74,7 +74,7 @@ function ServerHop()
             conn = TeleportService.TeleportInitFailed:Connect(function() end)
             print("JOB ID: ", jobId)
             pcall(function() return TeleportService:TeleportToPlaceInstance(PlaceId, jobId, LP) end)
-            task.wait(10)
+            task.wait(1)
             if conn then conn:Disconnect() end
         end
     end
