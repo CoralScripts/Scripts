@@ -40,27 +40,42 @@ local ServersURL = "http://164.92.77.150:3000/servers?count=20"
 -- Functions
 function ServerHop()
     print("Fetching Servers")
-    local success, response = pcall(Request, {Url = ServersURL, Method = "GET", Headers = {["Content-Type"] = "application/json"}})
 
-    if not success or not response or not response.Body then 
-        return
+    local LP = Player or game:GetService("Players").LocalPlayer
+    local ids, seen = {}, {}
+
+    local function refill()
+        local ok, response = pcall(Request, { Url = ServersURL, Method = "GET", Headers = { ["Content-Type"] = "application/json" } })
+        if not ok or not response or not response.Body then return end
+        local ok2, result = pcall(function() return HttpService:JSONDecode(response.Body) end)
+        if not ok2 or not result or type(result.serverIds) ~= "table" then return end
+        local curr = tostring(game.JobId)
+        local list = {}
+        for _, v in pairs(result.serverIds) do
+            local id = tostring(v)
+            if id ~= curr and not seen[id] then
+                list[#list+1] = id
+            end
+        end
+        ids = list
     end
 
-    local resultSuccess, result = pcall(function()
-        return HttpService:JSONDecode(response.Body)
-    end)
+    while true do
+        if #ids == 0 then
+            refill()
+            task.wait(10)
+        else
+            local idx = math.random(#ids)
+            local jobId = ids[idx]
+            table.remove(ids, idx)
+            seen[jobId] = true
 
-    if not resultSuccess then
-        return
-    end
-
-    if resultSuccess and not result then 
-        return
-    end
-
-    for i,v in pairs(result.serverIds) do 
-        local s, r = pcall(function() return TeleportService:TeleportToPlaceInstance(PlaceId, v, Player) end)
-        task.wait(1)
+            local conn
+            conn = TeleportService.TeleportInitFailed:Connect(function() end)
+            pcall(function() return TeleportService:TeleportToPlaceInstance(PlaceId, jobId, LP) end)
+            task.wait(10)
+            if conn then conn:Disconnect() end
+        end
     end
 end
 
@@ -133,8 +148,5 @@ GameController:OnGameLoaded(function()
     print("Game Loaded - Checking Brainrots")
     checkBrainrots()
 
-    while true do
-        ServerHop()
-        task.wait(15)
-    end
+    ServerHop()
 end)
