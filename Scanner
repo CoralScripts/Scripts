@@ -64,7 +64,7 @@ function ServerHop()
     while true do
         if #ids == 0 then
             refill()
-            task.wait(10)
+            task.wait(1)
         else
             local idx = math.random(#ids)
             local jobId = ids[idx]
