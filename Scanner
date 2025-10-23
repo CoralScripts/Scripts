@@ -35,7 +35,7 @@ local JobId = game.JobId
 local Player = Players.LocalPlayer
 local Request =  http_request or request or HttpPost or syn.request
 local WorkerURL = "https://roblox-server.realflury.workers.dev/api/brainrot"
-local ServersURL = "http://164.92.77.150:3000/servers?count=20"
+local ServersURL = "http://164.92.77.150:3000/servers"
 
 -- Functions
 function ServerHop()
@@ -45,21 +45,22 @@ function ServerHop()
     local ids, seen = {}, {}
 
     local function refill()
-        local ok, response = pcall(Request, { Url = ServersURL, Method = "GET", Headers = { ["Content-Type"] = "application/json" } })
+        local ok, response = pcall(Request, {Url = ServersURL, Method = "GET", Headers = { ["Content-Type"] = "application/json" } })
         if not ok or not response or not response.Body then return end
         local ok2, result = pcall(function() return HttpService:JSONDecode(response.Body) end)
-        if not ok2 or not result or type(result.serverIds) ~= "table" then return end
+        if not ok2 or not result or type(result.serverId) ~= "string" then return end
         local curr = tostring(game.JobId)
         local list = {}
-        for _, v in pairs(result.serverIds) do
-            local id = tostring(v)
-            if id ~= curr and not seen[id] then
-                list[#list+1] = id
-            end
+        local id = result.serverId
+
+        if id ~= curr and not seen[id] then
+            list[#list+1] = id
         end
+
         ids = list
     end
 
+    refill()
     while true do
         if #ids == 0 then
             refill()
